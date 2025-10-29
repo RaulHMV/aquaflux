@@ -1,4 +1,6 @@
 {
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
   "rewrites": [
     {
       "source": "/api/:path*",
@@ -23,5 +25,10 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/**/*.ts": {
+      "includeFiles": "node_modules/pg/**"
+    }
+  }
 }
