@@ -1,0 +1,38 @@
+name: Deploy Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: Deploy Production
+        required: false
+        default: devl
+
+permissions:
+  contents: write
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.source }}
+          fetch-depth: 0
+
+      - name: Fetch current prod
+        run: git fetch origin prod || true
+
+      - name: Fast-forward prod to source
+        run: |
+          if git show-ref --verify --quiet refs/remotes/origin/prod; then
+            if git merge-base --is-ancestor origin/prod HEAD; then
+              git push origin HEAD:prod
+            else
+              echo "Not a fast-forward. Rebase devl or use force input."
+              exit 1
+            fi
+          else
+            git push origin HEAD:prod
+          fi
