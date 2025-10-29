@@ -2,6 +2,8 @@
 // API ROUTE: /api/auth/register
 // ==========================================
 
+export const runtime = 'nodejs';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { createUser } from '@/lib/controllers/users.controller';
 import { userSchema } from '@/lib/validations/users.validation';

@@ -2,6 +2,8 @@
 // API ROUTE: /api/auth/login
 // ==========================================
 
+export const runtime = 'nodejs';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { loginUser } from '@/lib/controllers/users.controller';
 import { userLoginSchema } from '@/lib/validations/users.validation';

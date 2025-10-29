@@ -3,6 +3,8 @@
 // Obtiene datos de gráfica del sensor de flujo de agua
 // ==========================================
 
+export const runtime = 'nodejs';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getWaterFlowChartData } from '@/lib/controllers/feeds.controller';
 import { DEFAULT_INTERNAL_ERROR } from '@/lib/constants/errors/errors.constants';

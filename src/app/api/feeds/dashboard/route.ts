@@ -3,6 +3,8 @@
 // Obtiene todos los datos para el dashboard (leak + water flow)
 // ==========================================
 
+export const runtime = 'nodejs';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getDashboardData } from '@/lib/controllers/feeds.controller';
 import { DEFAULT_INTERNAL_ERROR } from '@/lib/constants/errors/errors.constants';

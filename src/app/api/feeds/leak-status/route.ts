@@ -3,6 +3,8 @@
 // Obtiene el estado del detector de fugas (presostato)
 // ==========================================
 
+export const runtime = 'nodejs';
+
 import { NextRequest, NextResponse } from 'next/server';
 import { getLeakStatus } from '@/lib/controllers/feeds.controller';
 import { DEFAULT_INTERNAL_ERROR } from '@/lib/constants/errors/errors.constants';
