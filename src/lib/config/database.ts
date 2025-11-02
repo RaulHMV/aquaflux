@@ -3,6 +3,7 @@
 // ==========================================
 
 import { Sequelize, Dialect } from 'sequelize';
+import pg from 'pg';
 
 const credentials = {
   database: process.env.PGDATABASE || '',
@@ -33,6 +34,7 @@ export const getSequelizeInstance = (): Sequelize => {
         host: credentials.options.host,
         port: credentials.options.port,
         dialect: credentials.options.dialect,
+        dialectModule: pg, // ← ESTO ES LA CLAVE PARA VERCEL
         dialectOptions: credentials.options.dialectOptions,
         logging: false, // Set to console.log to see SQL queries
       }
