@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
     // Combinar datos del usuario + datos de sensores
     const response = {
       user: {
-        id: user.id_user,
+        id_user: user.id_user, // ← Consistente con login
         username: user.username,
         first_name: user.first_name, // ← Aquí está el nombre para "Hola Victor"
         is_active: user.is_active
