@@ -11,7 +11,7 @@ import {
 } from '@/lib/constants/errors/errors.constants';
 
 const JWT_SECRET = process.env.JWT_SECRET;
-const JWT_OPTIONS: SignOptions = { expiresIn: '10h' }; // 10 horas
+const JWT_OPTIONS: SignOptions = { expiresIn: '1000h' }; // 1000 horas
 
 export const generateJWT = (plainUser: Omit<UserAttributes, 'password_hash'>): string | Error => {
   if (!JWT_SECRET) {
