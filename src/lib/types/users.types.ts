@@ -30,6 +30,7 @@ export interface UserAttributes {
   username: string;
   first_name: string;
   password_hash: string;
+  fcm_token?: string | null;
   created_at?: string;
   updated_at?: string;
   is_active?: boolean;

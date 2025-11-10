@@ -38,6 +38,20 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
+# firebase credentials (NUNCA subir al repo)
+*firebase-adminsdk*.json
+firebase-config.json
+serviceAccountKey.json
+
+# secrets y configuraciones sensibles
+secrets/
+*.key
+*.pem
+*.cert
+
+# migration scripts con datos sensibles
+migrations/*.local.sql
+
 # vercel
 .vercel
 

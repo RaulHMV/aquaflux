@@ -11,6 +11,7 @@ class Users extends Model<UserAttributes, InferCreationAttributes<Users>> implem
   declare username: string;
   declare first_name: string;
   declare password_hash: string;
+  declare fcm_token: CreationOptional<string | null>;
   declare created_at: CreationOptional<string>;
   declare updated_at: CreationOptional<string>;
   declare is_active: CreationOptional<boolean>;
@@ -35,6 +36,11 @@ Users.init(
     password_hash: {
       type: DataTypes.STRING(255),
       allowNull: false,
+    },
+    fcm_token: {
+      type: DataTypes.STRING(500),
+      allowNull: true,
+      defaultValue: null,
     },
     created_at: {
       type: DataTypes.STRING,
