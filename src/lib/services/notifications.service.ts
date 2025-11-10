@@ -12,7 +12,7 @@ export interface NotificationPayload {
 }
 
 /**
- * Envía notificaciones a múltiples tokens usando sendMulticast
+ * Envía notificaciones a múltiples tokens usando send individual
  * @param tokens Array de FCM tokens
  * @param notification Payload de la notificación
  * @returns Array de tokens inválidos que deben ser eliminados
@@ -29,41 +29,45 @@ export const sendBatchNotifications = async (
   try {
     console.log(`📤 Enviando notificaciones a ${tokens.length} dispositivos...`);
 
-    const message = {
-      notification: {
-        title: notification.title,
-        body: notification.body,
-      },
-      data: notification.data || {},
-      tokens: tokens,
-    };
-
-    const response = await admin.messaging().sendMulticast(message);
-
-    console.log(`✅ ${response.successCount} notificaciones enviadas exitosamente`);
-    console.log(`❌ ${response.failureCount} notificaciones fallaron`);
-
-    // Identificar tokens inválidos
     const invalidTokens: string[] = [];
+    let successCount = 0;
+    let failureCount = 0;
 
-    if (response.failureCount > 0) {
-      response.responses.forEach((resp, idx) => {
-        if (!resp.success) {
-          const errorCode = resp.error?.code;
-          
-          // Si el token está no registrado o es inválido, lo marcamos para eliminar
-          if (
-            errorCode === 'messaging/registration-token-not-registered' ||
-            errorCode === 'messaging/invalid-registration-token'
-          ) {
-            invalidTokens.push(tokens[idx]);
-            console.log(`🗑️  Token inválido detectado: ${tokens[idx].substring(0, 20)}...`);
-          } else {
-            console.error(`⚠️  Error enviando a token ${idx}:`, resp.error?.message);
-          }
+    // Enviar a cada token individualmente
+    for (const token of tokens) {
+      try {
+        const message = {
+          notification: {
+            title: notification.title,
+            body: notification.body,
+          },
+          data: notification.data || {},
+          token: token,
+        };
+
+        await admin.messaging().send(message);
+        successCount++;
+        console.log(`✅ Notificación enviada a token: ${token.substring(0, 20)}...`);
+      } catch (error: any) {
+        failureCount++;
+        const errorCode = error.code;
+
+        // Si el token está no registrado o es inválido, lo marcamos para eliminar
+        if (
+          errorCode === 'messaging/registration-token-not-registered' ||
+          errorCode === 'messaging/invalid-registration-token' ||
+          errorCode === 'messaging/invalid-argument'
+        ) {
+          invalidTokens.push(token);
+          console.log(`🗑️  Token inválido detectado: ${token.substring(0, 20)}...`);
+        } else {
+          console.error(`⚠️  Error enviando a token ${token.substring(0, 20)}:`, error.message);
         }
-      });
+      }
     }
+
+    console.log(`✅ ${successCount} notificaciones enviadas exitosamente`);
+    console.log(`❌ ${failureCount} notificaciones fallaron`);
 
     return invalidTokens;
   } catch (error: any) {
